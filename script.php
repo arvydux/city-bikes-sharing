@@ -6,8 +6,8 @@ use Services\ConsoleService;
 
 try {
     if (isset($argv[1])) {
-        $console_service = new ConsoleService();
-        $console_service->showShortestDistancesFromStationsByCity($argv[1]);
+        $console_service = new ConsoleService($argv[1]);
+        $console_service->showShortestDistancesFromStationsByCity();
     } else {
         echo "Enter the city";
     }

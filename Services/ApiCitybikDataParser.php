@@ -8,13 +8,16 @@ class ApiCitybikDataParser
 {
     protected string $base_url = 'https://api.citybik.es';
     protected string $api_endpoint_url = '/v2/networks';
+    private ResponseValueDecoder $responseValueDecoder;
 
     public function __construct(private readonly string $city = '')
     {
+        $this->responseValueDecoder = new ResponseValueDecoder();
     }
 
-    public function getHrefsByCity(): string
+    public function getHrefsByCity(): null|string
     {
+        $href = null;
         $response_from_api = $this->getParsedApiResponse();
 
         foreach ($response_from_api["networks"] as $network) {
@@ -26,20 +29,13 @@ class ApiCitybikDataParser
         return $href;
     }
 
-    private function getParsedApiResponse(): array
-    {
-        $api_content = file_get_contents($this->base_url . $this->api_endpoint_url);
-
-        return (new Decoders\ResponseValueDecoder())->parseResponse($api_content);
-    }
-
     public function getStationsData(): array
     {
         $hrefOfCity = $this->getHrefsByCity();
 
         $company_content = file_get_contents($this->base_url . $hrefOfCity);
 
-        $response = (new ResponseValueDecoder())->parseResponse($company_content);
+        $response = $this->responseValueDecoder->parseResponse($company_content);
 
         foreach ($response["network"]["stations"] as $stat) {
             $stations_data[] = [
@@ -51,5 +47,12 @@ class ApiCitybikDataParser
         }
 
         return $stations_data;
+    }
+
+    private function getParsedApiResponse(): array
+    {
+        $api_content = file_get_contents($this->base_url . $this->api_endpoint_url);
+
+        return $this->responseValueDecoder->parseResponse($api_content);
     }
 }

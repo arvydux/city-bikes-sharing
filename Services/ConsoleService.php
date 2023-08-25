@@ -6,10 +6,14 @@ use Services\BikersParser\BikersParserService;
 
 class ConsoleService
 {
-    public function showShortestDistancesFromStationsByCity(?string $city): void
+    public function __construct(private string $city)
     {
-        if ($this->isValidInput($city)) {
-            $distance_calculator = new DistanceCalculator(new BikersParserService(), new ApiCitybikDataParser($city));
+    }
+
+    public function showShortestDistancesFromStationsByCity(): void
+    {
+        if ($this->isValidInput()) {
+            $distance_calculator = new DistanceCalculator(new BikersParserService(), new ApiCitybikDataParser($this->city));
             $shortest_distances = $distance_calculator->getShortestDistancesFromStationToBikersData();
 
             foreach ($shortest_distances as $shortest_distance) {
@@ -21,15 +25,15 @@ class ConsoleService
                 echo PHP_EOL;
             }
         } else {
-            $city = readline("City was not found or entered incorrectly. Try to enter again ");
-            $this->showShortestDistancesFromStationsByCity($city);
+            $this->city = readline("City was not found or entered incorrectly. Try to enter again ");
+            $this->showShortestDistancesFromStationsByCity();
         }
     }
 
-    private function isValidInput(?string $city): bool
+    private function isValidInput(): bool
     {
-        $city = ucfirst(strtolower($city));
-        $hrefs_of_cities = (new ApiCitybikDataParser($city))->getHrefsByCity();
+        $this->city = ucfirst(strtolower($this->city));
+        $hrefs_of_cities = (new ApiCitybikDataParser($this->city))->getHrefsByCity();
 
         return !(empty($hrefs_of_cities));
     }
