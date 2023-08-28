@@ -1,8 +1,9 @@
 <?php
 
-namespace Services;
+namespace App\Services;
 
-use Services\Decoders\ResponseValueDecoder;
+
+use App\Services\Decoders\ResponseValueDecoder;
 
 class ApiCitybikDataParser
 {

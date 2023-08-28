@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Services\ApiCitybikDataParser;
-use Services\BikersParser\BikersParserService;
-use Services\DistanceCalculator;
+use App\Services\ApiCitybikDataParser;
+use App\Services\BikersParser\BikersParserService;
+use App\Services\DistanceCalculator;
 
 final class DistanceCalculatorTest extends TestCase
 {

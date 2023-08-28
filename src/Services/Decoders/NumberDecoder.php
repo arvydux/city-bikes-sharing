@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Decoders;
+namespace App\Services\Decoders;
 
 class NumberDecoder extends ResponseValueDecoder implements Decoder
 {

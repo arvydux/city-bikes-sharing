@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
-use Services\ApiCitybikDataParser;
+use App\Services\ApiCitybikDataParser;
 
 final class ApiCitybikDataParserTest extends TestCase
 {

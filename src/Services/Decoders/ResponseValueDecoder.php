@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Decoders;
+namespace App\Services\Decoders;
 
 use Error;
 
@@ -46,7 +46,7 @@ class ResponseValueDecoder
                 return (new DefaultDecoder)->decodeValue($decode_value, $i, $n);
             }
 
-            return (new ('Services\\Decoders\\' . $decoder_types[$decode_value[$i]]))->decodeValue(
+            return (new ('App\\Services\\Decoders\\' . $decoder_types[$decode_value[$i]]))->decodeValue(
                 $decode_value,
                 $i,
                 $n

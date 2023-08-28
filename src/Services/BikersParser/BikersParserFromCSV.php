@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\BikersParser;
+namespace App\Services\BikersParser;
 
 class BikersParserFromCSV implements BikersParserInterface
 {

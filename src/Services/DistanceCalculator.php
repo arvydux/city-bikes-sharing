@@ -1,8 +1,8 @@
 <?php
 
-namespace Services;
+namespace App\Services;
 
-use Services\BikersParser\BikersParserService;
+use App\Services\BikersParser\BikersParserService;
 
 class DistanceCalculator
 {

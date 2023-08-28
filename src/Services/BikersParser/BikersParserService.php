@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\BikersParser;
+namespace App\Services\BikersParser;
 
 class BikersParserService
 {
@@ -11,7 +11,7 @@ class BikersParserService
     {
         try {
             $class_name = 'BikersParserFrom' . strtoupper($format);
-            return (new ("Services\\BikersParser\\" . $class_name))->parse();
+            return (new (__NAMESPACE__ . '\\' . $class_name))->parse();
         } catch (\Exception) {
             throw new \Exception("BikersParserFrom' . stopper($format) . 'Service not found");
         }

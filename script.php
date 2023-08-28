@@ -1,8 +1,8 @@
 <?php
 
-require_once 'script_autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
-use Services\ConsoleService;
+use App\Services\ConsoleService;
 
 try {
     if (isset($argv[1])) {
