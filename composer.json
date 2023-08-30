@@ -4,7 +4,7 @@
       "App\\": "src/"
     },
     "classmap": [
-      ""
+      "src/"
     ]
   },
   "require-dev": {

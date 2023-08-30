@@ -2,19 +2,24 @@
 
 namespace App\Services;
 
-use App\Services\BikersParser\BikersParserService;
+use App\Services\BikersParser\BikersParserInterface;
 
 class ConsoleService
 {
-    public function __construct(private string $city)
-    {
+    public function __construct(
+        private readonly BikersParserInterface $bikersParserService,
+        private readonly ApiCitybikDataParser $apiCitybikDataParser
+    ) {
     }
 
     public function showShortestDistancesFromStationsByCity(): void
     {
         if ($this->isValidInput()) {
-            $distance_calculator = new DistanceCalculator(new BikersParserService(), new ApiCitybikDataParser($this->city));
-            $shortest_distances = $distance_calculator->getShortestDistancesFromStationToBikersData();
+            $shortest_distances_calculator = new ShortestDistancesCalculator(new DistanceCalculator());
+            $shortest_distances = $shortest_distances_calculator->getShortestDistancesFromStationToBikers(
+                $this->bikersParserService->parse(),
+                $this->apiCitybikDataParser->getStationsData(),
+            );
 
             foreach ($shortest_distances as $shortest_distance) {
                 echo "distance: " . $shortest_distance["distance"] . PHP_EOL;
@@ -32,8 +37,7 @@ class ConsoleService
 
     private function isValidInput(): bool
     {
-        $this->city = ucfirst(strtolower($this->city));
-        $hrefs_of_cities = (new ApiCitybikDataParser($this->city))->getHrefsByCity();
+        $hrefs_of_cities = $this->apiCitybikDataParser->getHrefsByCity();
 
         return !(empty($hrefs_of_cities));
     }

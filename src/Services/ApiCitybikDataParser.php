@@ -2,18 +2,14 @@
 
 namespace App\Services;
 
-
-use App\Services\Decoders\ResponseValueDecoder;
-
 class ApiCitybikDataParser
 {
     protected string $base_url = 'https://api.citybik.es';
     protected string $api_endpoint_url = '/v2/networks';
-    private ResponseValueDecoder $responseValueDecoder;
 
-    public function __construct(private readonly string $city = '')
+    public function __construct(private string $city = '')
     {
-        $this->responseValueDecoder = new ResponseValueDecoder();
+        $this->city = ucfirst(strtolower($city));
     }
 
     public function getHrefsByCity(): null|string
@@ -21,9 +17,9 @@ class ApiCitybikDataParser
         $href = null;
         $response_from_api = $this->getParsedApiResponse();
 
-        foreach ($response_from_api["networks"] as $network) {
-            if ($network["location"]["city"] === $this->city) {
-                $href = $network["href"];
+        foreach ($response_from_api->networks as $network) {
+            if ($network->location->city === $this->city) {
+                $href = $network->href;
             }
         }
 
@@ -36,24 +32,24 @@ class ApiCitybikDataParser
 
         $company_content = file_get_contents($this->base_url . $hrefOfCity);
 
-        $response = $this->responseValueDecoder->parseResponse($company_content);
+        $response = json_decode($company_content);
 
-        foreach ($response["network"]["stations"] as $stat) {
+        foreach ($response->network->stations as $stat) {
             $stations_data[] = [
-                "name"       => $stat["name"],
-                "latitude"   => $stat["latitude"],
-                "longitude"  => $stat["longitude"],
-                "free_bikes" => $stat["free_bikes"]
+                "name"       => $stat->name,
+                "latitude"   => $stat->latitude,
+                "longitude"  => $stat->longitude,
+                "free_bikes" => $stat->free_bikes
             ];
         }
 
         return $stations_data;
     }
 
-    private function getParsedApiResponse(): array
+    private function getParsedApiResponse(): \stdClass
     {
         $api_content = file_get_contents($this->base_url . $this->api_endpoint_url);
 
-        return $this->responseValueDecoder->parseResponse($api_content);
+        return json_decode($api_content);
     }
 }

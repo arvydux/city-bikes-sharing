@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Decoders;
+namespace App\Services\Decoders_delete;
 
 class TrueDecoder extends ResponseValueDecoder implements Decoder
 {

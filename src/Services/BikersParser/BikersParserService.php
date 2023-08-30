@@ -7,11 +7,11 @@ class BikersParserService
     /**
      * @throws \Exception
      */
-    public function parse(string $format = 'CSV'): array
+    public function getServiceByFormat(string $format): BikersParserInterface
     {
         try {
             $class_name = 'BikersParserFrom' . strtoupper($format);
-            return (new (__NAMESPACE__ . '\\' . $class_name))->parse();
+            return (new (__NAMESPACE__ . '\\' . $class_name));
         } catch (\Exception) {
             throw new \Exception("BikersParserFrom' . stopper($format) . 'Service not found");
         }

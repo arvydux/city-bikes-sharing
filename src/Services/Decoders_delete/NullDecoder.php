@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Decoders;
+namespace App\Services\Decoders_delete;
 
 class NullDecoder extends ResponseValueDecoder implements Decoder
 {
